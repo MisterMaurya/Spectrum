@@ -1,5 +1,8 @@
 package com.spectrum.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spectrum.constants.ApiConstants;
+import com.spectrum.constants.DBconstants;
+import com.spectrum.dto.Search;
 import com.spectrum.entity.Role;
 import com.spectrum.entity.User;
 import com.spectrum.service.RoleService;
@@ -48,7 +53,7 @@ public class UserController {
 					ApiConstants.USERNAME_ALREADY_EXISTS + user.getUsername().toString());
 			return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 		}
-		
+
 		// if contact will be unique
 
 		/*
@@ -60,11 +65,10 @@ public class UserController {
 		 * ResponseEntity<>(response.toString(), HttpStatus.OK); }
 		 */
 
-		Role existingRole = null;
+		boolean existingRole = false;
 		for (Role role : user.getRole()) {
-			System.out.println(role.getRoleName());
-			existingRole = roleService.findByRoleName(role.getRoleName());
-			if (existingRole == null) {
+			existingRole = roleService.isRoleExists(role.getRoleId());
+			if (!existingRole) {
 				response.put(ApiConstants.ERROR_RESPONSE, ApiConstants.ROLE_NOT_FOUND);
 				return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 			}
@@ -82,7 +86,7 @@ public class UserController {
 	@RequestMapping(value = ApiConstants.REST_USER_PATH, produces = ApiConstants.REST_JSON_CONTENT_TYPE, method = RequestMethod.GET)
 	@ApiOperation(value = ApiConstants.GET_ALL_USER)
 	public ResponseEntity getAllUser() {
-		return new ResponseEntity<>(userService.listUsers(),HttpStatus.OK);
+		return new ResponseEntity<>(userService.listUsers(), HttpStatus.OK);
 	}
 
 	// Get a user
@@ -108,6 +112,7 @@ public class UserController {
 	}
 
 	// Update a user
+
 	@PutMapping(value = ApiConstants.REST_USER_PATH, consumes = ApiConstants.REST_JSON_CONTENT_TYPE, produces = ApiConstants.REST_JSON_CONTENT_TYPE)
 	@ApiOperation(value = ApiConstants.UPDATE_USER)
 	public ResponseEntity getAllUser(@RequestBody User user) {
@@ -123,12 +128,12 @@ public class UserController {
 			response.put(ApiConstants.ERROR_RESPONSE, ApiConstants.USER_ID_NOT_FOUND);
 			return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 		}
-		
-		Role existingRole = null;
+
+		boolean existingRole = false;
 		for (Role role : user.getRole()) {
 			System.out.println(role.getRoleName());
-			existingRole = roleService.findByRoleName(role.getRoleName());
-			if (existingRole == null) {
+			existingRole = roleService.isRoleExists(role.getRoleId());
+			if (!existingRole) {
 				response.put(ApiConstants.ERROR_RESPONSE, ApiConstants.ROLE_NOT_FOUND);
 				return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 			}
@@ -140,6 +145,49 @@ public class UserController {
 		}
 		response.put(ApiConstants.SUCCESS_RESPONSE, ApiConstants.USER_UPDATE_SUCCESSFULLY);
 		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = ApiConstants.REST_USER_PATH
+			+ ApiConstants.SEARCH, consumes = ApiConstants.REST_JSON_CONTENT_TYPE, produces = ApiConstants.REST_JSON_CONTENT_TYPE)
+	public ResponseEntity search(@RequestBody Search search) {
+		List<User> userList = null;
+		JSONObject response = new JSONObject();
+		String key = search.getKey();
+		String value = search.getValue();
+			
+	   /***  {KEYs}
+	    * 
+	    email:
+		is_active
+		contact
+		role
+		name
+		
+		*/
+
+		if (key.equals(DBconstants.EMAIL))
+			userList = userService.listUsers().stream().filter(i -> i.getEmail().contains(value))
+					.collect(Collectors.toList());
+		else if (key.equals(DBconstants.IS_ACTIVE)) {
+			userList = userService.listUsers().stream().filter(i -> i.getIsEnabled().toString().equals(value))
+					.collect(Collectors.toList());
+
+		} else if (key.equals(DBconstants.CONTACT)) {
+			userList = userService.listUsers().stream().filter(i -> i.getEmail().contains(value))
+					.collect(Collectors.toList());
+		} else if (key.equals(DBconstants.NAME)) {
+			userList = userService.listUsers().stream()
+					.filter(i -> (i.getFirstName() + i.getMiddleName() + i.getLastName()).contains(value))
+					.collect(Collectors.toList());
+		} else if (key.equals(DBconstants.ROLE)) {
+			userList = userService.listUsers().stream()
+					.filter(i -> i.getRole().iterator().next().getRoleName().equals(value))
+					.collect(Collectors.toList());
+		} else {
+			response.put(ApiConstants.ERROR_RESPONSE, ApiConstants.KEY_NOT_FOUND);
+			return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(userList, HttpStatus.OK);
 	}
 
 }

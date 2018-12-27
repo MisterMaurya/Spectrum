@@ -30,5 +30,7 @@ public interface DBconstants {
 	// DB
 	public static final String USER_ROLE_MAP = "user_role_map";
 	public static final String IS_ENABLED = "is_enabled";
+	public static final String NAME = "name";
+	public static final String ROLE = "role";
 
 }

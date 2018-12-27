@@ -7,7 +7,5 @@ import com.spectrum.entity.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-
-  public Role findByRoleName(String roleName);
-
+	
 }

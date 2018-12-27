@@ -27,7 +27,7 @@ CREATE TABLE `role_master` (
   `role_name` varchar(200) NOT NULL,
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `UK_pb4hcqci8mfd5ixfmlc5lgqfy` (`role_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `user_master` (
   `last_name` varchar(200) NOT NULL,
   `middle_name` varchar(200) DEFAULT NULL,
   `modified_by` int(11) DEFAULT NULL,
-  `modified_on` datetime NOT NULL,
+  `modified_on` datetime DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `prefix` varchar(11) NOT NULL,
   `username` varchar(300) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `user_master` (
   UNIQUE KEY `UK_9byi2yd5e68hr1x8ou18fj55c` (`email`),
   UNIQUE KEY `UK_gf9bptykx80i5a5q6d2bpnu9y` (`employee_id`),
   UNIQUE KEY `UK_aup32aiegpsvdq249ed35pfvm` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,4 +85,4 @@ CREATE TABLE `user_role_map` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-27 10:31:48
+-- Dump completed on 2018-12-28  0:19:21

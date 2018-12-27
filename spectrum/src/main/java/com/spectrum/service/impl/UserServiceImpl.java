@@ -25,12 +25,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public User createUser(User user) {
+		user.setModifiedOn(null);
+		user.setPassword(
+				user.getFirstName().substring(0, 3) + user.getLastName().substring(user.getLastName().length() - 3));
 		return userRepository.save(user);
 	}
 
 	@Override
-	public User createUser(User user) {
+	public User updateUser(User user) {
 		return userRepository.save(user);
 	}
 

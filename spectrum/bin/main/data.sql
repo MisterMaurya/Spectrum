@@ -21,7 +21,7 @@
 
 LOCK TABLES `role_master` WRITE;
 /*!40000 ALTER TABLE `role_master` DISABLE KEYS */;
-INSERT INTO `role_master` VALUES (1,'Admin'),(2,'Manager'),(3,'Technician'),(4,'Auditor');
+INSERT INTO `role_master` VALUES (1,'Admin'),(2,'Manager'),(3,'Technician'),(4,'Auditor'),(5,'Super_Admin');
 /*!40000 ALTER TABLE `role_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -31,7 +31,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `user_master` WRITE;
 /*!40000 ALTER TABLE `user_master` DISABLE KEYS */;
-INSERT INTO `user_master` VALUES (1,'string',0,'2018-12-27 11:24:45','string','string','string','Y','2018-12-27 11:24:45','string','string',0,'2018-12-27 11:24:45','string','string','string');
+INSERT INTO `user_master` VALUES (1,'9990099909',0,'2018-12-28 00:17:11','pawan@gmail.com','Pawan-01','Pawan','Y',NULL,'Maurya','Kumar',0,NULL,'Pawrya','Mr','Pawan11');
 /*!40000 ALTER TABLE `user_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-27 11:33:05
+-- Dump completed on 2018-12-28  0:20:04

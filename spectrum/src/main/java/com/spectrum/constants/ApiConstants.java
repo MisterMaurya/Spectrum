@@ -1,7 +1,5 @@
 package com.spectrum.constants;
 
-import java.util.Collection;
-
 public interface ApiConstants {
 
 	// CONTENT TYPE
@@ -33,4 +31,8 @@ public interface ApiConstants {
 	public static final String USER_ID_NOT_FOUND = "user id not found";
 
 	public static final String USER_UPDATE_SUCCESSFULLY = "user update successfully";
+
+	public static final String SEARCH = "/search";
+
+	public static final String KEY_NOT_FOUND = "key not found";
 }

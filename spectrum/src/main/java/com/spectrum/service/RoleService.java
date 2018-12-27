@@ -8,6 +8,8 @@ public interface RoleService {
   
   public List<Role> listRoles();
   
-  public Role findByRoleName(String roleName);
+  public boolean isRoleExists(Integer roleId);
+	
 
+ 
 }

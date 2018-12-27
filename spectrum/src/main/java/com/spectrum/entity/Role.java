@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 
 import com.spectrum.constants.DBconstants;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = DBconstants.ROLE_MASTER)
 public class Role {
@@ -29,6 +31,7 @@ public class Role {
 	}
 
 	@NotNull
+	@ApiModelProperty(hidden = true)
 	@Column(name = DBconstants.ROLE_NAME, unique = true, length = 200)
 	public String getRoleName() {
 		return roleName;

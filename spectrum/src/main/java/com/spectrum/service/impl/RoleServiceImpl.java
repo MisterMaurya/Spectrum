@@ -22,8 +22,8 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Role findByRoleName(String roleName) {
-		return roleRepo.findByRoleName(roleName);
+	public boolean isRoleExists(Integer roleId) {
+		return roleRepo.existsById(roleId);
 	}
 
 }

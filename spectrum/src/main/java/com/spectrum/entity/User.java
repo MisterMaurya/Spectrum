@@ -56,9 +56,9 @@ public class User {
 	}
 
 	@Id
+	@ApiModelProperty(hidden = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = DBconstants.USER_ID, unique = true, length = 11)
-
 	public int getUserId() {
 		return userId;
 	}
@@ -116,8 +116,8 @@ public class User {
 		this.email = email;
 	}
 
-	@Column(name = DBconstants.PASSWORD, updatable = true)
 	@JsonIgnore
+	@Column(name = DBconstants.PASSWORD, updatable = true)
 	public String getPassword() {
 		return password;
 	}
@@ -179,30 +179,30 @@ public class User {
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(name = DBconstants.CREATED_ON)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public Date getCreatedOn() {
 		return createdOn;
 	}
 
 	public void setCreatedOn(Date createdOn) {
-		this.createdOn = new Date(createdOn.getTime());
+		this.createdOn = new Date();
 	}
 
-	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = DBconstants.MODIFIED_ON)
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@Column(name = DBconstants.MODIFIED_ON)
+	@ApiModelProperty(hidden = true)
 	public Date getModifiedOn() {
 		return modifiedOn;
 	}
 
 	public void setModifiedOn(Date modifiedOn) {
-		this.modifiedOn = modifiedOn;
+		this.modifiedOn = null;
 	}
 
 	@Column(name = DBconstants.CREATED_BY, length = 11)
-	@JsonProperty(access = Access.WRITE_ONLY)
+	@ApiModelProperty(hidden = true)
 	public int getCreatedBy() {
 		return createdBy;
 	}
@@ -211,7 +211,8 @@ public class User {
 		this.createdBy = createdBy;
 	}
 
-	@JsonProperty(access = Access.WRITE_ONLY)
+	@ApiModelProperty(hidden = true)
+	@JsonIgnore
 	@Column(name = DBconstants.MODIFIED_BY, length = 11)
 	public int getModifiedBy() {
 		return modifiedBy;
@@ -221,15 +222,15 @@ public class User {
 		this.modifiedBy = modifiedBy;
 	}
 
-	@ApiModelProperty(hidden = true)
 	@Temporal(TemporalType.TIMESTAMP)
+	@ApiModelProperty(hidden = true)
 	@Column(name = DBconstants.LAST_LOGIN, length = 11)
 	public Date getLastLogin() {
 		return lastLogin;
 	}
 
 	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
+		this.lastLogin = null;
 	}
 
 }
