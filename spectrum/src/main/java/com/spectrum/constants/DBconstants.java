@@ -25,7 +25,7 @@ public interface DBconstants {
 	// ROLE
 	public static final String ROLE_MASTER = "role_master";
 	public static final String ROLE_ID = "role_id";
-	public static final String ROLE_NAME = "role_name";
+	public static final String ROLE_NAME = "role";
 
 	// DB
 	public static final String USER_ROLE_MAP = "user_role_map";

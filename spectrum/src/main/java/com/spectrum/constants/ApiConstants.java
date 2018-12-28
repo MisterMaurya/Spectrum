@@ -35,4 +35,9 @@ public interface ApiConstants {
 	public static final String SEARCH = "/search";
 
 	public static final String KEY_NOT_FOUND = "key not found";
+	
+	
+	public static final String USER_LOGIN = "User Login";
+	public static final String USER_LOGIN_TAG = "USER_LOGIN_APIs";
+	public static final String USER_LOGIN_DESCRIPTION = "USER LOGIN OPERATION";
 }

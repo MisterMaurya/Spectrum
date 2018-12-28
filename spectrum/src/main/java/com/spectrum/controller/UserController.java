@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +29,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = ApiConstants.REST_BASE_PATH)
 @Api(tags = { ApiConstants.USER_CONTROLLER_TAG })
 public class UserController {
@@ -39,6 +42,7 @@ public class UserController {
 
 	// create a new user
 	@SuppressWarnings("rawtypes")
+	@PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN','AUDITOR')")
 	@PostMapping(value = ApiConstants.REST_USER_PATH, consumes = ApiConstants.REST_JSON_CONTENT_TYPE, produces = ApiConstants.REST_JSON_CONTENT_TYPE)
 	@ApiOperation(value = ApiConstants.CREATE_USER)
 	public ResponseEntity creatNewUser(@RequestBody User user) {
@@ -83,6 +87,8 @@ public class UserController {
 	}
 
 	// Get all user
+
+	@PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN','AUDITOR')")
 	@RequestMapping(value = ApiConstants.REST_USER_PATH, produces = ApiConstants.REST_JSON_CONTENT_TYPE, method = RequestMethod.GET)
 	@ApiOperation(value = ApiConstants.GET_ALL_USER)
 	public ResponseEntity getAllUser() {
@@ -91,6 +97,7 @@ public class UserController {
 
 	// Get a user
 	@SuppressWarnings("rawtypes")
+	@PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN','AUDITOR')")
 	@RequestMapping(value = ApiConstants.REST_USER_PATH
 			+ ApiConstants.REST_USER_ID_PARAM, produces = ApiConstants.REST_JSON_CONTENT_TYPE, method = RequestMethod.GET)
 	@ApiOperation(value = ApiConstants.GET_ONE_USER)
@@ -113,6 +120,7 @@ public class UserController {
 
 	// Update a user
 
+	@PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
 	@PutMapping(value = ApiConstants.REST_USER_PATH, consumes = ApiConstants.REST_JSON_CONTENT_TYPE, produces = ApiConstants.REST_JSON_CONTENT_TYPE)
 	@ApiOperation(value = ApiConstants.UPDATE_USER)
 	public ResponseEntity getAllUser(@RequestBody User user) {
@@ -154,16 +162,13 @@ public class UserController {
 		JSONObject response = new JSONObject();
 		String key = search.getKey();
 		String value = search.getValue();
-			
-	   /***  {KEYs}
-	    * 
-	    email:
-		is_active
-		contact
-		role
-		name
-		
-		*/
+
+		/***
+		 * {KEYs}
+		 * 
+		 * email: is_active contact role name
+		 * 
+		 */
 
 		if (key.equals(DBconstants.EMAIL))
 			userList = userService.listUsers().stream().filter(i -> i.getEmail().contains(value))

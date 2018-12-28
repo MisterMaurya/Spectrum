@@ -1,20 +1,31 @@
 package com.spectrum.service.impl;
 
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spectrum.entity.User;
 import com.spectrum.repository.UserRepository;
 import com.spectrum.service.UserService;
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service(value = "userService")
+@Transactional
+public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private BCryptPasswordEncoder bcryptEncoder;
 
 	@Override
 	public List<User> listUsers() {
@@ -26,9 +37,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(User user) {
+
 		user.setModifiedOn(null);
-		user.setPassword(
-				user.getFirstName().substring(0, 3) + user.getLastName().substring(user.getLastName().length() - 3));
+		user.setPassword(bcryptEncoder.encode(
+				user.getFirstName().substring(0, 3) + user.getLastName().substring(user.getLastName().length() - 3)));
 		return userRepository.save(user);
 	}
 
@@ -68,6 +80,27 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean existsById(Integer userId) {
 		return userRepository.existsById(userId);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("Invalid username or password.");
+		}
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+				getAuthority(user));
+	}
+
+	private Set<SimpleGrantedAuthority> getAuthority(User user) {
+		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+		user.getRole().forEach(role -> {
+			// authorities.add(new SimpleGrantedAuthority(role.getName()));
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+			System.out.println("ppppp"+role.getRoleName());
+		});
+		return authorities;
+		// return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
 	}
 
 }
