@@ -18,3 +18,9 @@ and Data Collection Software for R&D Scale Bioprocessing
 . The system consists of a digital peristaltic pump, multi-language man/machine
 interface with graphical LCD display, Pump Head, digital readouts of pressure values with automated
 shut-off controls, module stand, and real-time data collection software KF Comm
+
+## Screenshot Spectrum(Project) User Modules APIs 
+#### Swagger
+![Screenshots1](https://dl.dropbox.com/s/lzvklciktohbwn5/Screenshot_2018-12-31%20Swagger%20UI.png?raw=1)
+
+![Screenshots2](https://dl.dropbox.com/s/j0ozyjl24kvttdm/Screenshot_2018-12-31%20Swagger%20UI%281%29.png?raw=1)
